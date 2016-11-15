@@ -1,0 +1,6 @@
+{
+    "custom": {
+        "key": "value"
+    },
+    "payment_gateway": "stripe"
+}

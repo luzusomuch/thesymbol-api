@@ -1,0 +1,182 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width" />
+</head>
+<title>Invoice</title>
+<body>
+    <div style="width: 1012px; background: #FFFFFF; margin: 0 auto;">
+        <div style="width: 100%; background: #454B56; float: left; margin: 0 auto;">
+            <div style="padding: 20px 0 10px 15px; float: left; width: 50%;"></div>
+        </div>
+        <div style="width: 970px; background: #FFFFFF; float: left; padding: 20px; border: 1px solid #454B56;">
+
+              <div style="float: left; width: 35%; margin-bottom: 20px; margin-right: 7px;">Hi {{orders.0.user.name}}, You have bought following products.</div>
+            <div style="float: right; width: 35%; margin-bottom: 20px; margin-right: 7px;">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #cecece;">
+                    <tbody>
+                        <tr bgcolor="#f3f3f3">
+                            <td width="87" style="border-right: 1px solid #cecece;"><span style="font-size: 13px; font-family: Arial, Helvetica, sans-serif; text-align: center; width: 100%; font-weight: bold; color: #000000; line-height: 38px; float: left;">Order Id</span></td>
+                            <td width="100"><span style="font-size: 12px; font-family: Arial, Helvetica, sans-serif; font-weight: normal; color: #000000; line-height: 38px; text-align: center; width: 100%; float: left;">#{{orders.0._id}}</span></td>
+                        </tr>
+                        <tr bgcolor="#f3f3f3">
+                            <td width="87" style="border-right: 1px solid #cecece;"><span style="font-size: 13px; font-family: Arial, Helvetica, sans-serif; text-align: center; width: 100%; font-weight: bold; color: #000000; line-height: 38px; float: left;">Order Date</span></td>
+                            <td width="100"><span style="font-size: 12px; font-family: Arial, Helvetica, sans-serif; font-weight: normal; color: #000000; line-height: 38px; text-align: center; width: 100%; float: left;">{{orders.0.order_date}}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="float: left; width: 100%;">
+                <div style="width: 49%; float: left; border: 1px solid #cccccc; margin-right: 10px;">
+                    <span style="border-bottom: 1px solid #cccccc; background: #f3f3f3; width: 95.8%; float: left; padding: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold; color: #000305;">Shipping Address</span>
+                    <div style="float: left; padding: 10px; width: 96%; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #030002; line-height: 28px;">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td>Full Name</td>
+                                    <td>:</td>
+                                    <td>{{orders.0.user.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    <td>:</td>
+                                    <td>{{orders.0.shipping.address}}</td>
+                                </tr>
+                                <tr>
+                                    <td>City</td>
+                                    <td>:</td>
+                                    <td>{{orders.0.shipping.city}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Country</td>
+                                    <td>:</td>
+                                    <td>{{orders.0.shipping.country}}</td>
+                                </tr>
+                                <tr>
+                                    <td>State</td>
+                                    <td>:</td>
+                                    <td>{{orders.0.shipping.state}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Zipcode</td>
+                                    <td>:</td>
+                                    <td>{{orders.0.shipping.pincode}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Phone Number</td>
+                                    <td>:</td>
+                                    <td>{{orders.0.shipping.phone}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div style="width: 49%; float: left; border: 1px solid #cccccc;">
+                    <span style="border-bottom: 1px solid #cccccc; background: #f3f3f3; width: 95.7%; float: left; padding: 10px; font-family: Arial, Helvetica, sans-serif; font-size: 13px; font-weight: bold; color: #000305;">Billing Address</span>
+                    <div style="float: left; padding: 10px; width: 96%; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #030002; line-height: 28px;">
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                          <tbody>
+                              <tr>
+                                  <td>Full Name</td>
+                                  <td>:</td>
+                                  <td>{{orders.0.user.name}}</td>
+                              </tr>
+                              <tr>
+                                  <td>Address</td>
+                                  <td>:</td>
+                                  <td>{{orders.0.billing.address}}</td>
+                              </tr>
+                              <tr>
+                                  <td>City</td>
+                                  <td>:</td>
+                                  <td>{{orders.0.billing.city}}</td>
+                              </tr>
+                              <tr>
+                                  <td>Country</td>
+                                  <td>:</td>
+                                  <td>{{orders.0.billing.country}}</td>
+                              </tr>
+                              <tr>
+                                  <td>State</td>
+                                  <td>:</td>
+                                  <td>{{orders.0.billing.state}}</td>
+                              </tr>
+                              <tr>
+                                  <td>Zipcode</td>
+                                  <td>:</td>
+                                  <td>{{orders.0.billing.pincode}}</td>
+                              </tr>
+                              <tr>
+                                  <td>Phone Number</td>
+                                  <td>:</td>
+                                  <td>{{orders.0.billing.phone}}</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                    </div>
+                </div>
+            </div>
+            <div style="float: left; width: 100%; margin-right: 3%; margin-top: 10px; font-size: 14px; font-weight: normal; line-height: 28px; font-family: Arial, Helvetica, sans-serif; color: #000; overflow: hidden;">
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                        <tr>
+                            <td colspan="3">
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border: 1px solid #cecece; width: 99.5%;">
+                                    <tbody>
+                                        <tr bgcolor="#f3f3f3">
+                                            <td width="33%" style="border-right: 1px solid #cecece; text-align: center;"><span style="font-size: 12px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; color: #000000; line-height: 38px; text-align: center;">Product Name</span></td>
+                                            <td width="12%" style="border-right: 1px solid #cecece; text-align: center;"><span style="font-size: 12px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; color: #000000; line-height: 38px; text-align: center;">Qty</span></td>
+                                            <td width="12%" style="border-right: 1px solid #cecece; text-align: center;"><span style="font-size: 12px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; color: #000000; line-height: 38px; text-align: center;">Unit Price</span></td>
+                                            <td width="15%" style="text-align: center;"><span style="font-size: 12px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; color: #000000; line-height: 38px; text-align: center;">Sub Total</span></td>
+                                        </tr>
+                                        {{#each orders}}
+                                          {{#each products}}
+                                        <tr>
+                                            <td style="border-right:1px solid #cecece;text-align:center;border-top:1px solid #cecece;"><span style="font-size:13px; font-family:Arial, Helvetica, sans-serif; font-weight:normal; color:#000000; line-height:30px;  text-align:center;">{{name}}</span></td>
+                                            <td style="border-right:1px solid #cecece;text-align:center;border-top:1px solid #cecece;"><span style="font-size:13px; font-family:Arial, Helvetica, sans-serif; font-weight:normal; color:#000000; line-height:30px;  text-align:center;">{{qty}}</span></td>
+                                            <td style="border-right:1px solid #cecece;text-align:center;border-top:1px solid #cecece;"><span style="font-size:13px; font-family:Arial, Helvetica, sans-serif; font-weight:normal; color:#000000; line-height:30px;  text-align:center;">${{amount}}</span></td>
+                                            <td style="border-right:1px solid #cecece;text-align:center;border-top:1px solid #cecece;"><span style="font-size:13px; font-family:Arial, Helvetica, sans-serif; font-weight:normal; color:#000000; line-height:30px;  text-align:center;">${{multiply qty pricing.after_discount}}</span></td>
+                                        </tr>
+                                          {{/each}}
+                                        {{/each}}
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <table border="0" cellspacing="0" cellpadding="0" style=" margin:10px 0px; width:99.5%;">
+                                    <tr>
+                                        <td width="460" valign="top"></td>
+                                        <td width="174" valign="top">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid #cecece;">
+                                              <tr bgcolor="#f3f3f3">
+                                                  <td width="87" style="border-right:1px solid #cecece;"><span style="font-size:13px; font-family:Arial, Helvetica, sans-serif; font-weight:bold; color:#000000; line-height:38px; text-align:center; width:100%; float:left;">Sub Total</span></td>
+                                                  <td width="31"><span style="font-size:12px; font-family:Arial, Helvetica, sans-serif; font-weight:normal; color:#000000; line-height:38px; text-align:center; width:100%;  float:left;">${{getSubTotal orders}}</span></td>
+                                              </tr>
+                                                <tr bgcolor="#f3f3f3">
+                                                    <td width="87" style="border-right:1px solid #cecece;"><span style="font-size:13px; font-family:Arial, Helvetica, sans-serif; font-weight:bold; color:#000000; line-height:38px; text-align:center; width:100%; float:left;">Shipping Price Total</span></td>
+                                                    <td width="31"><span style="font-size:12px; font-family:Arial, Helvetica, sans-serif; font-weight:normal; color:#000000; line-height:38px; text-align:center; width:100%;  float:left;">${{getShippingTotal orders}}</span></td>
+                                                </tr>
+                                                <tr bgcolor="#f3f3f3">
+                                                    <td width="87" style="border-right:1px solid #cecece;"><span style="font-size:13px; font-family:Arial, Helvetica, sans-serif; font-weight:bold; color:#000000; line-height:38px; text-align:center; width:100%; float:left;">Grand Total</span></td>
+                                                    <td width="31"><span style="font-size:12px; font-family:Arial, Helvetica, sans-serif; font-weight:normal; color:#000000; line-height:38px; text-align:center; width:100%;  float:left;">${{orderTotal orders}}</span></td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                </table>
+            </div>
+            <!--end of left-->
+            <div style="width:27.4%; margin-right:5px; float:right;">
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </div>
+</body>
+
+</html>
