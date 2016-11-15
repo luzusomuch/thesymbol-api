@@ -415,6 +415,9 @@ exports.getProducts = function(req, res, next) {
             $lte: parseInt(req.query.hprice)
         };
     }
+    if (req.query.primesubscription==='true') {
+        where['primesubscription'] = true;
+    }
     var tem_project = Object.assign({}, product_project);
     delete tem_project.long_description;
     async.parallel({
