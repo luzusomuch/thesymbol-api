@@ -153,6 +153,10 @@ var tableSchema = new Schema({
     coordinates: [Number],
     // location type
     type: {type: String, default: 'Point'},
+    // primesubscription will be show in prime subscription list products
+    primesubscription: {
+        type: Boolean, default: false
+    },
     created_at: Date,
     updated_at: Date
 }, {
@@ -208,6 +212,7 @@ tableSchema.statics.updateProduct = function(user_id, id, body, cb) {
     product.country = body.country ? body.country : null;
     product.zipcode = body.zipcode ? body.zipcode : null;
     product.coordinates = (body.lng && body.lat) ? [body.lng, body.lat] : [];
+    product.primesubscription = body.primesubscription;
     this.update(where, product, {upsert: true}, cb);
 }
 tableSchema.statics.addProduct = function(user_id, body, cb) {
@@ -256,6 +261,7 @@ tableSchema.statics.addProduct = function(user_id, body, cb) {
     product.country = body.country ? body.country : null;
     product.zipcode = body.zipcode ? body.zipcode : null;
     product.coordinates = (body.lng && body.lat) ? [body.lng, body.lat] : [];
+    product.primesubscription = body.primesubscription;
     var Product_catelog = this.model("Product_catelog");
     new Product_catelog(product).save(cb);
 }
