@@ -24,6 +24,7 @@ router.use("/coupons", require("./v1/coupon"));
 router.use("/subscriptions", require("./v1/subscription"));
 router.use("/sources", require("./v1/source"));
 router.use("/primesubscriptions", require("./v1/primesubscription"));
+router.use("/currencies", require("./v1/currency"));
 router.get("/test", function(req, res, next) {
 });
 module.exports = router;
