@@ -50,3 +50,18 @@ exports.query = function(req, res, next) {
     return res._response(result);
   });
 }
+exports.getByCountryCode = (req, res, next) => {
+  if (req.query.countryCode) {
+    Currency.findOne({countryCode: req.query.countryCode}).exec((err, result) => {
+      if (err) {
+        return next(err);
+      }
+      if (!result) {
+        return next({status: '404', message: 'Currency not found'});
+      }
+      return res._response(result);
+    });
+  } else {
+    return next({status: '422', message: 'Missing country code'});
+  }
+}

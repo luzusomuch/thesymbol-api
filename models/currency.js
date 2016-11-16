@@ -10,6 +10,7 @@ var tableSchema = new Schema({
 		required: true
 	},
 	rate: Number,
+	icon: String,
   created_at: Date,
   updated_at: Date
 }, {

@@ -20,6 +20,7 @@ var product_project = {
     licenses: 1,
     product_videos: 1,
     type: 1,
+    primesubscription: 1,
     seller_name: {
         $arrayElemAt: ["$seller.name", 0]
     },
