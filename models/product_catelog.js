@@ -152,7 +152,7 @@ var tableSchema = new Schema({
     zipcode: String,
     coordinates: [Number],
     // location type
-    type: {type: String, default: 'Point'},
+    // type: {type: String, default: 'Point'},
     // primesubscription will be show in prime subscription list products
     primesubscription: {
         type: Boolean, default: false
