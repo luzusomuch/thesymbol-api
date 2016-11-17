@@ -33,6 +33,7 @@ router.use("/category", require("./user/category"));
 router.use("/order", require("./user/order"));
 router.use("/payment", require("./user/payment"));
 router.use("/account", require("./user/account"));
+router.use("/wishlist", require("./user/wishlist"));
 
 router.get("/", userC.query);
 router.get("/:id", userC.fetch);
