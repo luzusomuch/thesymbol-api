@@ -85,7 +85,7 @@ Product.find({}, (err, products) => {
 									pricing: 'parentDocumentPricing',
 									meta: 'parentDocument',
 									_childDocuments_:[{
-										id: product._id+'_shipping',
+										id: product._id+'_shipping_'+randomString(10),
 										weight: product.shipping_details.weight,
 										unit: product.shipping_details.unit,
 										width: product.shipping_details.width,
@@ -94,7 +94,7 @@ Product.find({}, (err, products) => {
 										fee: product.shipping_details.fee,
 										duration: product.shipping_details.duration,
 									}, {
-										id: product._id+'_pricing',
+										id: product._id+'_pricing_'+randomString(10),
 										original: product.pricing.original,
 										after_discount: product.pricing.after_discount,
 										savings: product.pricing.savings,
@@ -129,7 +129,7 @@ Product.find({}, (err, products) => {
 								if (product.variants) {
 									_.each(product.variants, (variant) => {
 										item._childDocuments_.push({
-											id: product._id+'_varian',
+											id: product._id+'_varian_'+randomString(10),
 											_id: variant._id,
 											name: variant.name,
 											quantity: variant.quantity,
