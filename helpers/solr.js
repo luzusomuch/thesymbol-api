@@ -13,6 +13,14 @@ var randomString = (len, charSet) => {
   return randomString;
 };
 
+exports.deleteSolrDocument = (product, callback) => {
+	client.deleteByID(product._id, (err, resp) => {
+		console.log(err);
+		console.log(resp);
+		client.softCommit(callback);
+	});
+};
+
 exports.createOrUpdateSolrDocument = (product, callback) => {
 	let item = {
 		id: product._id,
@@ -86,7 +94,9 @@ exports.createOrUpdateSolrDocument = (product, callback) => {
 			});
 		});
 	}
-	client.add(item, () => {
+	client.add(item, (err, success) => {
+		console.log(err);
+		console.log(success);
 		client.softCommit(callback);
 	});
 };
