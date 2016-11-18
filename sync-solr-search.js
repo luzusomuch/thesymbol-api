@@ -47,7 +47,7 @@ Product.find({}, (err, products) => {
 			let query = client.createQuery()
 			.q({'*': '*'})
 		 	.start(0)
-		 	.rows(1000);
+		 	.rows(100000);
 
 			client.search(query, (err, data) => {
 				if (err) {
@@ -127,6 +127,9 @@ Product.find({}, (err, products) => {
 								};
 								// add variants to _childDocuments_
 								if (product.variants) {
+									if (!item._childDocuments_) {
+										item._childDocuments_ = [];
+									}
 									_.each(product.variants, (variant) => {
 										item._childDocuments_.push({
 											id: product._id+'_varian_'+randomString(10),
