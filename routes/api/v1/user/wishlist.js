@@ -5,4 +5,6 @@ var productController = require(ROOT_FOLDER + "/controllers/api/v1/user/product"
 var wlController = require(ROOT_FOLDER + "/controllers/api/v1/user/wishlist");
 router.post("/add-wishlist", auth.partialAuthenticate, wlController.addWishlist);
 router.get("/get-wishlist", auth.partialAuthenticate, wlController.getWishlist);
+router.get("/delete-wishlist", auth.partialAuthenticate, wlController.deleteWishlist);
+router.get("/check-wishlist", auth.partialAuthenticate, wlController.checkWishlist);
 module.exports = router;
