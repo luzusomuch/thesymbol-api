@@ -12,6 +12,9 @@ var async = require('async');
 var _s_mail = require(ROOT_FOLDER + "/services/mail");
 var ObjectId = Mongoose.Types.ObjectId;
 exports.addWishlist = function(req, res, next) {
+
+    console.log(req.body);
+
     new Wishlist(req.body)
         .save(function(err, result) {
             if (err) {
@@ -23,9 +26,63 @@ exports.addWishlist = function(req, res, next) {
         });
 }
 exports.getWishlist = function(req, res, next) {
-	console.log('here');
-  // Product.find({}).exec(function(err, result) {
-  //   if (err) return next(err);
-  //   return res._response(result);
-  // });
+    var where = {
+      is_deleted: false,
+      user_id: req.query.user_id
+    };
+
+    Wishlist
+        .find(where)
+        .populate({
+          path: 'product_id',
+        })
+        .exec(function(err, result) {
+            var options = {
+              path: 'product_id.images',
+              model: 'Image'
+            };
+
+            if (err) return res.json(500);
+            Wishlist.populate(result, options, function (err, result) {
+              if (!err) {
+                return res._response({
+                  products: result
+                }, "success", 200, "Fetched Successfully");
+              }
+              return next(err);
+            });
+
+        });
+}
+exports.deleteWishlist = function(req, res, next) {
+    Wishlist.update({_id: req.query.wishlist_id},
+      {$set: {is_deleted: true}},
+      function(err, result) {
+        if (err) {
+          return next(err);
+        }
+        else{
+          return res._response(result);
+        }
+      });
+}
+exports.checkWishlist = function(req, res, next) {
+    console.log(req.query.product_id);
+    console.log(req.query.user_id);
+
+    var where = {
+      product_id: req.query.product_id,
+      user_id: req.query.user_id,
+      is_deleted: false
+    }
+
+    Wishlist.find(where)
+      .exec(function(err, result) {
+        if (err) {
+          return next(err);
+        }
+        else{
+          return res._response(result);
+        }
+      });
 }
