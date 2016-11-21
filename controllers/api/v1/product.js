@@ -234,6 +234,10 @@ exports.searchProducts = (req, res, next) => {
                 if (err) {
                     return callback(err);
                 }
+                if (!product) {
+                    console.log('no product found');
+                    return callback({status: 404, message: 'Product not found'});
+                }
                 data.items.push(product);
                 callback(null);
             });
