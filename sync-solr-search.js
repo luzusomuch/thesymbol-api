@@ -47,7 +47,7 @@ Product.find({}, (err, products) => {
 			let query = client.createQuery()
 			.q({'*': '*'})
 		 	.start(0)
-		 	.rows(1000);
+		 	.rows(100000);
 
 			client.search(query, (err, data) => {
 				if (err) {
@@ -60,6 +60,8 @@ Product.find({}, (err, products) => {
 						client.softCommit(() => {
 							// sync new product to Solr
 							async.each(products, (product, callback) => {
+								let coordinates = (product.coordinates[0] && product.coordinates[1]) ? [product.coordinates[1], product.coordinates[0]].toString() : [0, 0].toString();
+
 								let item = {
 									id: product._id,
 									_id: product._id,
@@ -85,7 +87,7 @@ Product.find({}, (err, products) => {
 									pricing: 'parentDocumentPricing',
 									meta: 'parentDocument',
 									_childDocuments_:[{
-										id: randomString(10)+'_shipping',
+										id: product._id+'_shipping_'+randomString(10),
 										weight: product.shipping_details.weight,
 										unit: product.shipping_details.unit,
 										width: product.shipping_details.width,
@@ -94,7 +96,7 @@ Product.find({}, (err, products) => {
 										fee: product.shipping_details.fee,
 										duration: product.shipping_details.duration,
 									}, {
-										id: randomString(10)+'_pricing',
+										id: product._id+'_pricing_'+randomString(10),
 										original: product.pricing.original,
 										after_discount: product.pricing.after_discount,
 										savings: product.pricing.savings,
@@ -108,7 +110,7 @@ Product.find({}, (err, products) => {
 									// licenses: 'parentDocument',
 									// _childDocuments_: product.licenses,
 									type: product.type,
-									// created_by: product.created_by,
+									created_by: product.created_by,
 									is_deleted: product.is_deleted,
 									is_active: product.is_active,
 									status: product.status,
@@ -120,16 +122,20 @@ Product.find({}, (err, products) => {
 									state: product.state,
 									country: product.country,
 									// zipcode: (product.zipcode) ? product.zipcode : null,
-									coordinates: product.coordinates,
+									coordinates: coordinates,
 									primesubscription: product.primesubscription,
 									created_at: product.created_at,
 									updated_at: product.updated_at
 								};
 								// add variants to _childDocuments_
 								if (product.variants) {
+									if (!item._childDocuments_) {
+										item._childDocuments_ = [];
+									}
 									_.each(product.variants, (variant) => {
 										item._childDocuments_.push({
-											id: randomString()+'_varian',
+											id: product._id+'_varian_'+randomString(10),
+											_id: variant._id,
 											name: variant.name,
 											quantity: variant.quantity,
 											original: variant.original,

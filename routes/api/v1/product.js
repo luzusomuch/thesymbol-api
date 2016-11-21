@@ -68,6 +68,7 @@ router.put("/update-product/:id",
     productController.updateProduct
 );
 router.post("/isexist", productController.isExistSKU);
+router.post("/search-products", productController.searchProducts);
 router.put("/delete-product/:id",
     passport.authenticate("token", {
         session: false
