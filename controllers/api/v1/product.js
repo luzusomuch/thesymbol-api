@@ -202,6 +202,7 @@ exports.getFeatureProducts = function(req, res, next) {
 }
 
 exports.searchProducts = (req, res, next) => {
+    let query = client.createQuery();
     console.log(req.body);
     let limit = req.body.limit || 10;
     let page  = req.body.page || 1; 
@@ -216,11 +217,16 @@ exports.searchProducts = (req, res, next) => {
     if (req.body.shopId) {
         q.created_by = req.body.shopId;
     }
-    let query = client.createQuery();
+    // search by location
+    if (req.body.lat && req.body.lng) {
+        query.parameters.push('fq={!geofilt%20pt='+req.body.lat+','+req.body.lng+'%20sfield=coordinates%20d=50}')
+    }
     query.q(q);
     query.start(start);
     query.rows(limit);
     client.search(query, (err, resp) => {
+        console.log(err);
+        console.log(resp);
         if (err) {
             return next(err);
         } 
