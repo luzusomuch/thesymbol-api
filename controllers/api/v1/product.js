@@ -3,6 +3,11 @@ var Product = require(ROOT_FOLDER + "/models/product_catelog");
 var Category = require(ROOT_FOLDER + "/models/category");
 var Images = require(ROOT_FOLDER + "/models/image");
 var _s_mail = require(ROOT_FOLDER + "/services/mail");
+var solr = require('solr-client');
+var client = solr.createClient({
+    core: 'the_symbol_solr'
+});
+var async = require('async');
 
 exports.addProduct = function(req, res, next) {
     Product.addProduct(req.user._id, req.body, function(err, result) {
@@ -194,4 +199,46 @@ exports.getFeatureProducts = function(req, res, next) {
                 return res._response(result);
             });
         });
+}
+
+exports.searchProducts = (req, res, next) => {
+    console.log(req.body);
+    let limit = req.body.limit || 10;
+    let page  = req.body.page || 1; 
+    let start = (page -1) * limit;
+    let q = {};
+    if (req.body.category) {
+        q.categories = req.body.category;
+    }
+    if (req.body.productName && req.body.productName.length > 0) {
+        q.title = req.body.productName
+    }
+    if (req.body.shopId) {
+        q.created_by = req.body.shopId;
+    }
+    let query = client.createQuery();
+    query.q(q);
+    query.start(start);
+    query.rows(limit);
+    client.search(query, (err, resp) => {
+        if (err) {
+            return next(err);
+        } 
+        let data = {totalItem: resp.response.numFound, items: []};
+        async.each(resp.response.docs, (item, callback) => {
+            Product.findById(item._id)
+            .populate("images")
+            .populate("categories")
+            .populate("source")
+            .exec(function(err, product) {
+                if (err) {
+                    return callback(err);
+                }
+                data.items.push(product);
+                callback(null);
+            });
+        }, () => {
+            return res._response(data);
+        });
+    });
 }

@@ -60,6 +60,8 @@ Product.find({}, (err, products) => {
 						client.softCommit(() => {
 							// sync new product to Solr
 							async.each(products, (product, callback) => {
+								let coordinates = (product.coordinates[0] && product.coordinates[1]) ? [product.coordinates[1], product.coordinates[0]].toString() : [0, 0].toString();
+
 								let item = {
 									id: product._id,
 									_id: product._id,
@@ -108,7 +110,7 @@ Product.find({}, (err, products) => {
 									// licenses: 'parentDocument',
 									// _childDocuments_: product.licenses,
 									type: product.type,
-									// created_by: product.created_by,
+									created_by: product.created_by,
 									is_deleted: product.is_deleted,
 									is_active: product.is_active,
 									status: product.status,
@@ -120,7 +122,7 @@ Product.find({}, (err, products) => {
 									state: product.state,
 									country: product.country,
 									// zipcode: (product.zipcode) ? product.zipcode : null,
-									coordinates: product.coordinates,
+									coordinates: coordinates,
 									primesubscription: product.primesubscription,
 									created_at: product.created_at,
 									updated_at: product.updated_at

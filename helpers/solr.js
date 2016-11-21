@@ -22,6 +22,8 @@ exports.deleteSolrDocument = (product, callback) => {
 };
 
 exports.createOrUpdateSolrDocument = (product, callback) => {
+	let coordinates = (product.coordinates[0] && product.coordinates[1]) ? [product.coordinates[1], product.coordinates[0]].toString() : [0, 0].toString();
+
 	let item = {
 		id: product._id,
 		_id: product._id,
@@ -70,10 +72,11 @@ exports.createOrUpdateSolrDocument = (product, callback) => {
 		city: product.city,
 		state: product.state,
 		country: product.country,
-		coordinates: product.coordinates,
 		primesubscription: product.primesubscription,
 		created_at: product.created_at,
-		updated_at: product.updated_at
+		updated_at: product.updated_at,
+		created_by: product.created_by,
+		coordinates: coordinates,
 	};
 	// add variants to _childDocuments_
 	if (product.variants) {
