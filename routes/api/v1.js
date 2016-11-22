@@ -25,6 +25,7 @@ router.use("/subscriptions", require("./v1/subscription"));
 router.use("/sources", require("./v1/source"));
 router.use("/primesubscriptions", require("./v1/primesubscription"));
 router.use("/currencies", require("./v1/currency"));
+router.use("/comments", require("./v1/comment"));
 router.get("/test", function(req, res, next) {
 });
 router.use("/ratings", require("./v1/rating"));
