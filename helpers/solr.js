@@ -50,6 +50,7 @@ exports.createOrUpdateSolrDocument = (product, callback) => {
 			depth: product.shipping_details.depth,
 			fee: product.shipping_details.fee,
 			duration: product.shipping_details.duration,
+			type: 'shipping'
 		}, {
 			id: product._id+'_pricing_'+randomString(10),
 			original: product.pricing.original,
@@ -57,6 +58,7 @@ exports.createOrUpdateSolrDocument = (product, callback) => {
 			savings: product.pricing.savings,
 			commission: product.pricing.commission,
 			service_tax: product.pricing.service_tax,
+			type: 'pricing'
 		}], 
 		categories: product.categories,
 		quantity: product.quantity,
@@ -94,6 +96,7 @@ exports.createOrUpdateSolrDocument = (product, callback) => {
 				savings: variant.savings,
 				commission: variant.commission,
 				service_tax: variant.service_tax,
+				type: 'variant'
 			});
 		});
 	}

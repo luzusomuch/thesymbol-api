@@ -31,6 +31,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(require('prerender-node').set('prerenderServiceUrl', 'http://localhost:1337/'));
 app.use(function(req, res, next) {
     res._response = function(result, status, code, message) {
         var output = {};
