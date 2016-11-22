@@ -27,4 +27,5 @@ router.use("/primesubscriptions", require("./v1/primesubscription"));
 router.use("/currencies", require("./v1/currency"));
 router.get("/test", function(req, res, next) {
 });
+router.use("/ratings", require("./v1/rating"));
 module.exports = router;

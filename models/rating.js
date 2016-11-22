@@ -2,43 +2,34 @@ var mongoose = require("mongoose");
 var randomChar = require("node-random-chars");
 var Schema = mongoose.Schema;
 var tableSchema = new Schema({
-    product : {
-        type: Schema.Types.ObjectId,
-        ref: 'Product_catelog',
-        required: true
-    },
     user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: 'Product_catelog',
+    },
+    seller: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
     },
     stars: {
       type: Number,
       default: 0
     },
-    title: {
-      type: String,
-      default: null
-    },
     comment: {
       type: String,
       default: null
     },
-    upvotes: {
+    status: {
       type: Number,
-      default: 0
-    },
-    downvotes: {
-      type: Number,
-      default: 0
+      default: 1
     },
     is_deleted: {
       type: Number,
       default: 0
-    },
-    status: {
-      type: Number,
-      default: 1
     },
     created_at: Date,
     updated_at: Date
@@ -46,6 +37,7 @@ var tableSchema = new Schema({
     timestamps: {
         createdAt: 'created_at',
         updatedAt: 'updated_at'
-    }
+    },
+    collection: 'ratings'
 });
 module.exports = DB_CONNECTION.model("Rating", tableSchema);

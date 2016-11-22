@@ -1,3 +1,5 @@
+'use strict';
+
 var User = require(ROOT_FOLDER + "/models/users");
 var Product = require(ROOT_FOLDER + "/models/product_catelog");
 var Category = require(ROOT_FOLDER + "/models/category");
