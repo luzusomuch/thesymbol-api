@@ -12,8 +12,6 @@ var async = require('async');
 var _s_mail = require(ROOT_FOLDER + "/services/mail");
 var ObjectId = Mongoose.Types.ObjectId;
 exports.addReview = function(req, res, next) {
-    console.log(req.body);
-
     new Rating(req.body)
         .save(function(err, result) {
             if (err) {
@@ -22,5 +20,42 @@ exports.addReview = function(req, res, next) {
             else {
             	return res._response(result);
             }
+        });
+}
+exports.getReview = function(req, res, next) {
+    var where = '';
+    if (req.query.seller) {
+        where = {
+            is_deleted: false,
+            seller: req.query.seller
+        };
+    }
+    else {
+        where = {
+            is_deleted: false,
+            product: req.query.product
+        };
+    }
+
+    Rating
+        .find(where)
+        .populate({
+            path: 'user',
+        })
+        .exec(function(err, result) {
+            var options = {
+                path: 'user.image',
+                model: 'Image'
+            };
+
+            if (err) return res.json(500);
+            Rating.populate(result, options, function (err, result) {
+                if (!err) {
+                    return res._response({
+                        reviews: result
+                    }, "success", 200, "Fetched Successfully");
+                }
+                return next(err);
+            });
         });
 }
