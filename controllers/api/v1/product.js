@@ -5,6 +5,7 @@ var Product = require(ROOT_FOLDER + "/models/product_catelog");
 var Category = require(ROOT_FOLDER + "/models/category");
 var Images = require(ROOT_FOLDER + "/models/image");
 var _s_mail = require(ROOT_FOLDER + "/services/mail");
+var solrHelper = require(ROOT_FOLDER + '/helpers/solr');
 var solr = require('solr-client');
 var client = solr.createClient({
     core: 'the_symbol_solr'
@@ -14,9 +15,21 @@ var async = require('async');
 exports.addProduct = function(req, res, next) {
     Product.addProduct(req.user._id, req.body, function(err, result) {
         if (!err) {
-            return res._response(result);
+            solrHelper.createOrUpdateSolrDocument(result, function(err, resp) {
+                if (!err) {
+                    return res._response(result);
+                } else {
+                    Product.remove({_id: result._id}).exec(function(err, resp) {
+                        if (err) {
+                            return next(err);
+                        }
+                        return next({status: 500, message: 'Error when create product'});
+                    });
+                }
+            });
+        } else {
+            return next(err);
         }
-        return next(err);
     });
 }
 exports.getProducts = function(req, res, next) {
@@ -101,6 +114,7 @@ exports.updateProductStatus = function(req, res, next) {
     Product.update(where, data).exec(function(err, result) {
         if (!err) {
             _s_mail.sendProductStatusMail(req.params.id, req.params.status, function() {});
+            solrHelper.createOrUpdateSolrDocument(result, function(){});
             return res._response({
                 products: result
             }, "success", 200, "Updated Successfully");
@@ -111,11 +125,18 @@ exports.updateProductStatus = function(req, res, next) {
 exports.updateProduct = function(req, res, next) {
     Product.updateProduct(req.user._id, req.params.id, req.body, function(err, result) {
         if (!err) {
-            return res._response({
-                products: result
-            }, "success", 200, "Updated Successfully");
+            Product.findById(req.params.id, function(err, product) {
+                if (err) {
+                    return next(err);
+                }
+                solrHelper.createOrUpdateSolrDocument(product, function(){});
+                return res._response({
+                    products: product
+                }, "success", 200, "Updated Successfully");
+            });
+        } else {
+            return next(err);
         }
-        return next(err);
     });
 }
 exports.getOutOfStockProduct = function(req, res, next) {
@@ -134,6 +155,7 @@ exports.getOutOfStockProduct = function(req, res, next) {
 exports.deleteProduct = function(req, res, next) {
     Product.updateProduct(req.user._id, req.params.id, req.body, function(err, result) {
         if (!err) {
+            solrHelper.createOrUpdateSolrDocument(result, function(){});
             return res._response({
                 products: result
             }, "success", 200, "Deleted Successfully");

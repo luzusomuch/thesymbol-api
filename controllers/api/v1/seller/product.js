@@ -5,6 +5,7 @@ var Image = require(ROOT_FOLDER + "/models/image");
 var _h_product = require(ROOT_FOLDER + "/helpers/product");
 var async = require("async");
 var xls = require('excel');
+var solrHelper = require(ROOT_FOLDER + '/helpers/solr');
 
 exports.getApprovedProducts = function(req, res, next) {
     var where = {};
@@ -105,6 +106,7 @@ exports.updateProductStatus = function(req, res, next) {
     data.is_active = req.params.status;
     Product.update(where, data).exec(function(err, result) {
         if (!err) {
+            solrHelper.createOrUpdateSolrDocument(result, function(){});
             return res._response({
                 products: result
             }, "success", 200, "Updated Successfully");
@@ -115,6 +117,7 @@ exports.updateProductStatus = function(req, res, next) {
 exports.updateProduct = function(req, res, next) {
     Product.updateProduct(req.user._id, req.params.id, req.body, function(err, result) {
         if (!err) {
+            solrHelper.createOrUpdateSolrDocument(result, function(){});
             return res._response({
                 products: result
             }, "success", 200, "Updated Successfully");
@@ -129,6 +132,7 @@ exports.deleteProduct = function(req, res, next) {
     data.is_deleted = true;
     Product.update(where, data).exec(function(err, result) {
         if (!err) {
+            solrHelper.createOrUpdateSolrDocument(result, function(){});
             return res._response({
                 products: result
             }, "success", 200, "Deleted Successfully");

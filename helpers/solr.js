@@ -2,6 +2,7 @@ var solr = require('solr-client');
 var client = solr.createClient({
 	core: 'the_symbol_solr'
 });
+var _ = require('lodash');
 
 var randomString = (len, charSet) => {
   charSet = charSet || 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -102,6 +103,7 @@ exports.createOrUpdateSolrDocument = (product, callback) => {
 	}
 	client.add(item, (err, success) => {
 		console.log(err);
+		console.log('mapping product success');
 		console.log(success);
 		client.softCommit(callback);
 	});
