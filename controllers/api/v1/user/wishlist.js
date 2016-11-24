@@ -12,9 +12,6 @@ var async = require('async');
 var _s_mail = require(ROOT_FOLDER + "/services/mail");
 var ObjectId = Mongoose.Types.ObjectId;
 exports.addWishlist = function(req, res, next) {
-
-    console.log(req.body);
-
     new Wishlist(req.body)
         .save(function(err, result) {
             if (err) {
