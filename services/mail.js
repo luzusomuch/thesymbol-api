@@ -7,6 +7,7 @@ var globals = require(ROOT_FOLDER + "/config/globals");
 var sms_gateway = require(ROOT_FOLDER + "/config/sms_gateway");
 var twilio = require('twilio');
 var async = require("async");
+var fs = require("fs");
 var mandrill = require('node-mandrill')(globals.mail.mandrill);
 var _self = exports;
 
@@ -536,6 +537,28 @@ exports.sendVerificationSuccessMail = function(id, cb) {
         });
     });
 }
+
+exports.sendDisputeEmail = function(body, callback) {
+    fs.readFile(ROOT_FOLDER + "/views/email_templates/dispute_email.html", 'utf8', function(err, result) {
+        if (err) {
+            console.log('Error when send dispute email');
+            return callback();
+        }
+        var template = _self.parseTemplate(result, {
+            user: body.user,
+            product: body.product,
+            orderId: body.orderId,
+        });
+        _self.sendMail(admin_email,
+            body.user.email,
+            "User has create new dispute",
+            template,
+            "text"
+        );
+        callback();
+    });
+}
+
 var adminOrderTemplate = function(orders) {
     var html = "";
     var grand_total = 0;
