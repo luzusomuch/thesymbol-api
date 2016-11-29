@@ -36,19 +36,74 @@ exports.remove = function(req, res, next) {
     if (err) return next(err);
     return res._response(result);
   });
+};
+
+exports.addMessage = function(req, res, next) {
+	req.body.ownerId = req.user._id;
+	req.body.createdAt = new Date();
+	Dispute.findById(req.params.id).exec(function(err, dispute) {
+		if (err) {
+			return next(err);
+		}
+		if (!dispute) {
+			return next({status: 404, message: 'Disput not found'});
+		}
+		dispute.messages.push(req.body);
+		dispute.save(function(err) {
+			if (err) {
+				return next(err);
+			}
+			return res._response(req.body);
+		});
+	});
+};
+
+exports.updateStatus = function(req, res, next) {
+	if (!req.body.status) {
+		return next({status: 422, message: 'Missng status entity'});
+	}
+	Dispute.findById(req.params.id).exec(function(err, dispute) {
+		if (err) {
+			return next(err);
+		}
+		if (!dispute) {
+			return next({status: 404, message: 'Dispute not found'});
+		}
+		dispute.status = req.body.status;
+		dispute.save(function(err, saved) {
+			if (err) {
+				return next(err);
+			}
+			return res._response({status: saved.status});
+		});
+	});
 }
-exports.update = function(req, res, next) {
-  Dispute.update({
-    _id: req.params.id
-  }, req.body).exec(function(err, result) {
-    if (err) return next(err);
-    return res._response(result);
-  });
-}
+
+exports.findMyDispute = function(req, res, next) {
+	var page = req.params.page || 1;
+	var limit = req.params.limit || 10;
+	var skip = limit * (page -1);
+	Dispute.find({
+		$or: [{ownerId: req.user._id}, {shopId: req.user._id}]
+	})
+	.populate('productId').limit(limit).skip(skip).exec(function(err, disputes) {
+		if (err) {
+			return next(err);
+		}
+		Dispute.count({$or: [{ownerId: req.user._id}, {shopId: req.user._id}]}).exec(function(err, count) {
+			if (err) {
+				return next(err);
+			}
+			return res._response({totalItem: count, items: disputes});
+		});
+	});
+};
+
 exports.findById = function(req, res, next) {
-  Dispute.findOne({
-    _id: req.params.id
-  }).exec(function(err, result) {
+  Dispute.findById(req.params.id)
+  .populate('productId')
+  .populate('messages.ownerId', '-password')
+  .exec(function(err, result) {
     if (err) return next(err);
     if (!result) {
     	return next({status: 404, message: 'Dispute not found'});
