@@ -6,6 +6,11 @@ var auth = require(ROOT_FOLDER + "/middlewares/authentication");
 router.get("/", passport.authenticate('token', {
 	session: false
 }), disputeController.findMyDispute);
+
+router.get("/admin-get-all", passport.authenticate('token', {
+	session: false
+}), auth.isAdmin, disputeController.adminGetAll);
+
 router.get("/:id", disputeController.findById);
 
 router.post("/", passport.authenticate("token", {

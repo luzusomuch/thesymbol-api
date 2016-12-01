@@ -559,6 +559,27 @@ exports.sendDisputeEmail = function(body, callback) {
     });
 }
 
+exports.sendDisputeEmailToAdmin = function(body, callback) {
+    fs.readFile(ROOT_FOLDER + "/views/email_templates/dispute_email_to_admin.html", 'utf8', function(err, result) {
+        if (err) {
+            console.log('Error when send dispute email');
+            return callback();
+        }
+        var template = _self.parseTemplate(result, {
+            user: body.user,
+            product: body.product,
+            orderId: body.orderId,
+        });
+        _self.sendMail(admin_email,
+            body.user.email,
+            "Raised claim dispute with order id " + body.orderId,
+            template,
+            "text"
+        );
+        callback();
+    });
+}
+
 var adminOrderTemplate = function(orders) {
     var html = "";
     var grand_total = 0;

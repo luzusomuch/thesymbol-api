@@ -2,6 +2,7 @@ var Dispute = require(ROOT_FOLDER + "/models/dispute");
 var User = require(ROOT_FOLDER + "/models/users");
 var Product = require(ROOT_FOLDER + "/models/product_catelog");
 var mail = require(ROOT_FOLDER + "/services/mail");
+var async = require('async');
 
 exports.create = function(req, res, next) {
 	Dispute.findOne({
@@ -74,7 +75,16 @@ exports.updateStatus = function(req, res, next) {
 			if (err) {
 				return next(err);
 			}
-			return res._response({status: saved.status});
+			// send mail to admin when updated status is raiseClaim
+			User.find({roles: 'admin'}, (err, users) => {
+				Product.findById(saved.productId, function(err, product) {
+					async.each(users, (user, callback) => {
+						mail.sendDisputeEmailToAdmin({user: user, product: product, orderId: saved.orderId}, callback);
+					}, () => {
+						return res._response({status: saved.status});
+					});
+	    	});
+			});
 		});
 	});
 }
@@ -96,6 +106,18 @@ exports.findMyDispute = function(req, res, next) {
 			}
 			return res._response({totalItem: count, items: disputes});
 		});
+	});
+};
+
+exports.adminGetAll = function(req, res, next) {
+	Dispute.find({status: 'raiseClaim'})
+	.populate('productId')
+	.populate('ownerId', '-password')
+	.populate('shopId', '-password').exec(function(err, disputes) {
+		if (err) {
+			return next(err);
+		}
+		return res._response(disputes);
 	});
 };
 
