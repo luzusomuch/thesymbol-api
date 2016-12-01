@@ -1,5 +1,5 @@
 'use strict';
-let Like = require(ROOT_FOLDER + "/models/Like");
+let Like = require(ROOT_FOLDER + "/models/like");
 
 exports.create = function(req, res, next) {
 	let data = req.body;
