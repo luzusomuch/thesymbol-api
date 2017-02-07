@@ -23,9 +23,9 @@ exports.deleteSolrDocument = (product, callback) => {
 };
 
 exports.createOrUpdateSolrDocument = (product, callback) => {
-	let coordinates = (product.coordinates[0] && product.coordinates[1]) ? [product.coordinates[1], product.coordinates[0]].toString() : [0, 0].toString();
+	var coordinates = (product.coordinates[0] && product.coordinates[1]) ? [product.coordinates[1], product.coordinates[0]].toString() : [0, 0].toString();
 
-	let item = {
+	var item = {
 		id: product._id,
 		_id: product._id,
 		name: product.name,
