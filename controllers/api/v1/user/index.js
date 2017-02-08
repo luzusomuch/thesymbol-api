@@ -10,6 +10,7 @@ var hbs = require("express-hbs");
 var cloudinary = require("cloudinary");
 cloudinary.config(require(ROOT_FOLDER + "/config/cloudinary"));
 var async = require("async");
+var mongoose = require("mongoose");
 exports.test = function(req, res, next) {
     Images.find({
         "cdn.original_filename": {
@@ -87,6 +88,7 @@ exports.resgisterUser = function(req, res, next) {
                 .save(function(err, result) {
                     if (err) return next(err);
                     user.address = [result._id];
+                    user.social_logins = {fb_id: mongoose.Types.ObjectId(), google_id: mongoose.Types.ObjectId()};
                     new User(user)
                         .save(function(err, result) {
                             console.log('create user success');
