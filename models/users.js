@@ -37,11 +37,9 @@ var tableSchema = new Schema({
     social_logins: {
         fb_id: {
             type: String,
-            unique: true
         },
         google_id: {
             type: String,
-            unique: true
         }
     },
     shipping: {
