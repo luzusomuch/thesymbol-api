@@ -30,7 +30,7 @@ exports.resgisterSeller = function(req, res, next) {
         .save(function(err, result) {
             if (err) return next(err);
             seller.address = result._id;
-            user.social_logins = {fb_id: mongoose.Types.ObjectId(), google_id: mongoose.Types.ObjectId()};
+            seller.social_logins = {fb_id: mongoose.Types.ObjectId(), google_id: mongoose.Types.ObjectId()};
             new User(seller)
                 .save(function(err, result) {
                     if (err) return next(err);
