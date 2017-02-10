@@ -3,6 +3,7 @@ var Address = require(ROOT_FOLDER + "/models/address");
 var async = require("async");
 var _s_mail = require(ROOT_FOLDER + "/services/mail");
 var _c_help = require(ROOT_FOLDER + "/helpers/common");
+var mongoose = require("mongoose");
 exports.resgisterSeller = function(req, res, next) {
     var seller = {};
     var address1 = req.body.address;
@@ -29,6 +30,7 @@ exports.resgisterSeller = function(req, res, next) {
         .save(function(err, result) {
             if (err) return next(err);
             seller.address = result._id;
+            user.social_logins = {fb_id: mongoose.Types.ObjectId(), google_id: mongoose.Types.ObjectId()};
             new User(seller)
                 .save(function(err, result) {
                     if (err) return next(err);

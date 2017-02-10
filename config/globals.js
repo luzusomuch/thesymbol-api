@@ -6,9 +6,15 @@ module.exports = {
     salt: "secret"
   },
   url: {
-    user: "http://bluemix-user-v1.au-syd.mybluemix.net",
-    seller: "http://e-commerce-seller.mybluemix.net",
-    admin: "http://e-commerce-admin.mybluemix.net"
+    // for the symbol server
+    // user: "http://bluemix-user-v1.au-syd.mybluemix.net",
+    // seller: "http://e-commerce-seller.mybluemix.net",
+    // admin: "http://e-commerce-admin.mybluemix.net"
+
+    // for ecommercemarketplace server
+    user: "http://ecommercemarketplace.org",
+    seller: "http://seller.ecommercemarketplace.org",
+    admin: "http://admin.ecommercemarketplace.org"
   },
   site_title: "the-symbol",
   mail: {
