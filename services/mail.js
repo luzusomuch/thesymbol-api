@@ -90,16 +90,18 @@ exports.sendNotificationToSocialUser = function(user, cb) {
         _id: '57f360f904967b0038e1606f'
     }, function(err, result) {
         if (err) return cb(err);
-        var template = _self.parseTemplate(result.content, {
-            name: user.name,
-            site_title: site_title,
-            password: user.password
-        });
-        _self.sendMail(admin_email,
-            user.email,
-            result.subject,
-            template,
-            "text");
+        if (result) {
+            var template = _self.parseTemplate(result.content, {
+                name: user.name,
+                site_title: site_title,
+                password: user.password
+            });
+            _self.sendMail(admin_email,
+                user.email,
+                result.subject,
+                template,
+                "text");
+        }
     });
 };
 exports.sendStatusUpdateMail = function(user, status, cb) {
@@ -234,7 +236,7 @@ exports.sendRegistrationNotification = function(body, cb) {
         _id: '57ce739f57cebf341e41ce70'
     }, function(err, result) {
         if (err) return cb(err);
-        var link = user_url + "/#/confirmation/" + body._id;
+        var link = user_url + "/#!/confirmation/" + body._id;
         var template = _self.parseTemplate(result.content, {
             name: body.name,
             email: body.email,
