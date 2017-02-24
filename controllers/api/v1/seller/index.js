@@ -41,7 +41,7 @@ exports.resgisterSeller = function(req, res, next) {
 }
 exports.confirmUserStatus = function(req, res, next) {
     User.findOne({
-        _id: req.params.id
+        _id: mongoose.Types.ObjectId(req.params.id)
     }, function(err, user) {
         if (err) return next(err);
         if (!user)
