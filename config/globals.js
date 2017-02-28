@@ -12,9 +12,14 @@ module.exports = {
     // admin: "http://e-commerce-admin.mybluemix.net"
 
     // for ecommercemarketplace server
-    user: "http://ecommercemarketplace.org",
-    seller: "http://seller.ecommercemarketplace.org",
-    admin: "http://admin.ecommercemarketplace.org"
+    // user: "http://ecommercemarketplace.org",
+    // seller: "http://seller.ecommercemarketplace.org",
+    // admin: "http://admin.ecommercemarketplace.org"
+
+    // for romaios server
+    user: "http://romaios.com",
+    seller: "http://seller.romaios.com",
+    admin: "http://admin.romaios.com"
   },
   site_title: "the-symbol",
   mail: {
