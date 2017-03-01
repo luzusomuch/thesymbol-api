@@ -158,7 +158,7 @@ exports.changePassword = function(req, res, next) {
         else if (!user.checkPassword(req.body.opassword)) return next(Error("Password is not valid"));
         else if (req.body.npassword != req.body.cpassword) return next(Error("Confirm password is not valid"));
         else {
-            user.password = req.body.npassword;
+            user.password = user.encryptPassword(req.body.npassword);
             user.save(function(err, result) {
                 if (err) return next(err);
                 return res._response(result);

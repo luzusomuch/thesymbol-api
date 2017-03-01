@@ -124,19 +124,23 @@ exports.sendStatusUpdateMail = function(user, status, cb) {
             });
         },
         function(eTemplate, mTemplate, user, cb) {
-            var Objects = {};
-            var statusD = status == true ? "activated" : "deactivated";
-            Objects['eTemplate'] = _self.parseTemplate(eTemplate.content, {
-                name: user.name,
-                status: statusD
-            });
-            Objects['subject'] = eTemplate.subject;
-            Objects['mTemplate'] = _self.parseTemplate(mTemplate.content, {
-                name: user.name,
-                status: statusD
-            });
-            Objects['user'] = user;
-            cb(null, Objects);
+            if (eTemplate && mTemplate) {
+                var Objects = {};
+                var statusD = status == true ? "activated" : "deactivated";
+                Objects['eTemplate'] = _self.parseTemplate(eTemplate.content, {
+                    name: user.name,
+                    status: statusD
+                });
+                Objects['subject'] = eTemplate.subject;
+                Objects['mTemplate'] = _self.parseTemplate(mTemplate.content, {
+                    name: user.name,
+                    status: statusD
+                });
+                Objects['user'] = user;
+                cb(null, Objects);
+            } else {
+                cb({message: 'Template not found', errorCode: 404});
+            }
         }
     ], function(err, Objects) {
         user = Objects["user"];

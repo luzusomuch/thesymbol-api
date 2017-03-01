@@ -15,9 +15,12 @@ exports.remove = function(req, res, next) {
     });
 }
 exports.update = function(req, res, next) {
+  console.log(req.body);
     License.update({
         _id: req.params.id
     }, req.body).exec(function(err, result) {
+        console.log(err);
+        console.log(result);
         if (err) return next(err);
         return res._response(result);
     });

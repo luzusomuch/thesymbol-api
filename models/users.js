@@ -175,6 +175,10 @@ tableSchema.statics.findAndModify = function(query, sort, doc, options, callback
 tableSchema.methods.checkPassword = function checkPassword(password) {
     return bcrypt.compareSync(password, this.password);
 };
+tableSchema.methods.encryptPassword = function encryptPassword(password) {
+    var salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(password, salt);
+};
 tableSchema.methods.updateToken = function updateToken(cb) {
     var token = this.token = randomChar.create(32);
     this.save(function(err, updated) {
