@@ -4,10 +4,10 @@ ROOT_FOLDER = __dirname;
 // BASE_URL = "http://e-commerce-api.au-syd.mybluemix.net/";
 
 // romaios.com
-// BASE_URL = "http://romaios.com/";
+BASE_URL = "http://romaios.com/";
 
 // localhost
-BASE_URL = "http://localhost:3000/"
+// BASE_URL = "http://localhost:3000/"
 
 
 var express = require('express');
