@@ -4,7 +4,10 @@ ROOT_FOLDER = __dirname;
 // BASE_URL = "http://e-commerce-api.au-syd.mybluemix.net/";
 
 // romaios.com
-BASE_URL = "http://romaios.com/";
+// BASE_URL = "http://romaios.com/";
+
+// ecommercemarketplace.org
+BASE_URL = "http://ecommercemarketplace.org/";
 
 // localhost
 // BASE_URL = "http://localhost:3000/"
