@@ -160,6 +160,12 @@ tableSchema.statics.loginAsSeller = function(email, password, cb) {
                 });
             var validUser = user.checkPassword(password);
             if (validUser) {
+                if (user.verified == false) {
+                    return cb({
+                        message: "Your Email ID is not confirmed yet. Please login to your mail to confirm",
+                        statusCode: 401
+                    });
+                }
                 delete user.password;
                 return cb(null, user);
             }
