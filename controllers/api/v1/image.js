@@ -8,7 +8,7 @@ exports.uploadSingleImage = function(req, res, next) {
     if (!req.file) next(new Error("file has not been uploaded"));
     var image_data = {};
     image_data.path = req.file.path;
-    image_data.url = BASE_URL + "uploads/images/" + req.file.filename;
+    image_data.url = BASE_IP + "uploads/images/" + req.file.filename;
 
     Jimp.read(req.file.path).then(function(Jimage) {
         Jimage

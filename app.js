@@ -5,12 +5,15 @@ ROOT_FOLDER = __dirname;
 
 // romaios.com
 // BASE_URL = "http://romaios.com/";
+// BASE_IP = "http://54.197.4.128:3000/";
 
 // ecommercemarketplace.org
 BASE_URL = "http://ecommercemarketplace.org/";
+BASE_IP = "http://159.203.64.172:3000/";
 
 // localhost
 // BASE_URL = "http://localhost:3000/"
+// BASE_IP = "http://localhost:3000/";
 
 
 var express = require('express');
