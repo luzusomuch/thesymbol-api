@@ -148,6 +148,7 @@ exports.confirmUserStatus = function(req, res, next) {
     });
 }
 exports.forgotPassword = function(req, res, next) {
+    console.log(req.body);
     User.findOne({
         email: req.body.email
     }, function(err, user) {
