@@ -407,39 +407,50 @@ exports.sendProductStatusMail = function(id, status, cb) {
         function(eTemplate, mTemplate, product, cb) {
             var Objects = {};
             var statusD = status == true ? "activated" : "deactivated";
-            Objects['eTemplate'] = _self.parseTemplate(eTemplate.content, {
-                name: product.created_by.name,
-                email: product.created_by.email,
-                product_name: product.name,
-                status: statusD
-            });
-            Objects['subject'] = eTemplate.subject;
-            Objects['mTemplate'] = _self.parseTemplate(mTemplate.content, {
-                name: product.created_by.name,
-                email: product.created_by.email,
-                product_name: product.name,
-                status: statusD
-            });
+            if (eTemplate) {
+                Objects['eTemplate'] = _self.parseTemplate(eTemplate.content, {
+                    name: product.created_by.name,
+                    email: product.created_by.email,
+                    product_name: product.name,
+                    status: statusD
+                });
+                Objects['subject'] = eTemplate.subject;
+            }
+            if (mTemplate) {
+                Objects['mTemplate'] = _self.parseTemplate(mTemplate.content, {
+                    name: product.created_by.name,
+                    email: product.created_by.email,
+                    product_name: product.name,
+                    status: statusD
+                });
+            }
             Objects['product'] = product;
             cb(null, Objects);
         }
     ], function(err, Objects) {
-        product = Objects["user"];
+        if (err) {
+            return cb();
+        }
+        console.log('start sending email');
+        product = Objects['product'];
         _self.sendMail(admin_email,
             product.created_by.email,
             Objects['subject'],
             Objects['eTemplate'],
             "text"
         );
-        if (!product.created_by.mobile_verified) {
+        if (!product.created_by.mobile_verified && Objects['mTemplate']) {
             _self.sendMessage(
                 product.created_by.phone,
                 Objects['mTemplate'],
                 function(err, result) {
                     console.log(err)
-                    console.log(result)
+                    console.log(result);
+                    return cb();
                 }
             );
+        } else {
+            return cb();
         }
     });
 }

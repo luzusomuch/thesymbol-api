@@ -23,7 +23,7 @@ exports.deleteSolrDocument = (product, callback) => {
 };
 
 exports.createOrUpdateSolrDocument = (product, callback) => {
-	var coordinates = (product.coordinates[0] && product.coordinates[1]) ? [product.coordinates[1], product.coordinates[0]].toString() : [0, 0].toString();
+	var coordinates = (product.coordinates && product.coordinates[0] && product.coordinates[1]) ? [product.coordinates[1], product.coordinates[0]].toString() : [0, 0].toString();
 
 	var item = {
 		id: product._id,
@@ -44,13 +44,13 @@ exports.createOrUpdateSolrDocument = (product, callback) => {
 		meta: 'parentDocument',
 		_childDocuments_:[{
 			id: product._id+'_shipping_'+randomString(10),
-			weight: product.shipping_details.weight,
-			unit: product.shipping_details.unit,
-			width: product.shipping_details.width,
-			height: product.shipping_details.height,
-			depth: product.shipping_details.depth,
-			fee: product.shipping_details.fee,
-			duration: product.shipping_details.duration,
+			weight: (product.shipping_details) ? product.shipping_details.weight : 0,
+			unit: (product.shipping_details) ? product.shipping_details.unit : 0,
+			width: (product.shipping_details) ? product.shipping_details.width : 0,
+			height: (product.shipping_details) ? product.shipping_details.height : 0,
+			depth: (product.shipping_details) ? product.shipping_details.depth : 0,
+			fee: (product.shipping_details) ? product.shipping_details.fee : 0,
+			duration: (product.shipping_details) ? product.shipping_details.duration : 0,
 			type: 'shipping'
 		}, {
 			id: product._id+'_pricing_'+randomString(10),

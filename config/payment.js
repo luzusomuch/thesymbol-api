@@ -1,8 +1,13 @@
 module.exports = {
   sandbox: {
     stripe: {
-      secret_key: "sk_test_NA8mejhIhnL9K5ktMDEbwHFX",
-      publisher_key: "sk_test_NA8mejhIhnL9K5ktMDEbwHFX",
+      // the symbol key
+      // secret_key: "sk_test_NA8mejhIhnL9K5ktMDEbwHFX",
+      // publisher_key: "sk_test_NA8mejhIhnL9K5ktMDEbwHFX",
+
+      // ecommercemarketplace key
+      secret_key: 'sk_test_pIycMhoxfvSeJtTn8ycwwIQj',
+      publisher_key: 'pk_test_LbABRxHmOD2v4mP5rseUC4oK'
     }
   },
   live: {

@@ -1,6 +1,7 @@
 var Product = require(ROOT_FOLDER + "/models/product_catelog");
 var globals = require(ROOT_FOLDER + "/config/globals");
 var bcrypt = require("bcrypt");
+var mongoose = require("mongoose");
 exports.randomString = function(length) {
     length = length === undefined ? 6 : length;
     var text = "";

@@ -113,13 +113,19 @@ exports.updateProductStatus = function(req, res, next) {
     data.status = req.params.status;
     Product.update(where, data).exec(function(err, result) {
         if (!err) {
-            _s_mail.sendProductStatusMail(req.params.id, req.params.status, function() {});
-            solrHelper.createOrUpdateSolrDocument(result, function(){});
-            return res._response({
-                products: result
-            }, "success", 200, "Updated Successfully");
+            Product.findOne({_id: req.params.id}).exec(function(err, product) {
+                solrHelper.createOrUpdateSolrDocument(product, function(){
+                    _s_mail.sendProductStatusMail(product._id, product.status, function() {
+                        console.log('update status of product successfully');
+                        return res._response({
+                            products: result
+                        }, "success", 200, "Updated Successfully");
+                    });
+                });
+            });
+        } else {
+            return next(err);
         }
-        return next(err);
     });
 }
 exports.updateProduct = function(req, res, next) {
@@ -129,10 +135,11 @@ exports.updateProduct = function(req, res, next) {
                 if (err) {
                     return next(err);
                 }
-                solrHelper.createOrUpdateSolrDocument(product, function(){});
-                return res._response({
-                    products: product
-                }, "success", 200, "Updated Successfully");
+                solrHelper.createOrUpdateSolrDocument(product, function(){
+                    return res._response({
+                        products: product
+                    }, "success", 200, "Updated Successfully");
+                });
             });
         } else {
             return next(err);
@@ -155,10 +162,11 @@ exports.getOutOfStockProduct = function(req, res, next) {
 exports.deleteProduct = function(req, res, next) {
     Product.updateProduct(req.user._id, req.params.id, req.body, function(err, result) {
         if (!err) {
-            solrHelper.createOrUpdateSolrDocument(result, function(){});
-            return res._response({
-                products: result
-            }, "success", 200, "Deleted Successfully");
+            solrHelper.createOrUpdateSolrDocument(result, function(){
+                return res._response({
+                    products: result
+                }, "success", 200, "Deleted Successfully");
+            });
         }
         return next(err);
     });
