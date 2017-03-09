@@ -6,9 +6,10 @@ var catUController = require(ROOT_FOLDER + "/controllers/api/v1/user/category");
 var auth = require(ROOT_FOLDER + "/middlewares/authentication");
 router.get("/", function(req, res) {
     passport.authenticate("token", {
-            session: false
-        }),
-        categoryController.getCategories
+        session: false
+    }),
+    auth.isProductAddUser,
+    categoryController.getCategories
 })
 router.post("/",
     passport.authenticate("token", {
@@ -36,6 +37,7 @@ router.get("/get-categories",
         session: false
     }),
     auth.isAdmin,
+    auth.isProductAddUser,
     categoryController.getCategories
 );
 router.get("/get-approved-categories", catUController.getCategories);

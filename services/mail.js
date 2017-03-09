@@ -260,7 +260,7 @@ exports.sendRegistrationNotificationToSeller = function(body, cb) {
         _id: '57ce739f57cebf341e41ce70'
     }, function(err, result) {
         if (err) return cb(err);
-        var link = seller_url + "/#/confirmation/" + body._id;
+        var link = seller_url + "/#!/confirmation/" + body._id;
         var template = _self.parseTemplate(result.content, {
             name: body.name,
             email: body.email,
