@@ -10,10 +10,18 @@ const google_fields = {
 const url = "https://www.googleapis.com/oauth2/v3/userinfo"
 exports.getUser = function(token, fields, cb) {
     var fields = Array.isArray(fields) ? getFields(fields).join(",") : fields;
+    console.log(fields);
     request(url + '?access_token=' + token + '&fields=' + fields, function(err, repsonse, body) {
-        if (err) return cb(err);
+        if (err)  {
+            console.log(err);
+            return cb(err);
+        }
         var user = JSON.parse(body);
-        if (user.error) return cb(new Error("Invalid Token."));
+        console.log(user);
+        if (user.error) {
+            console.log(user.error);
+            return cb(new Error("Invalid Token."));  
+        } 
         return cb(null, {
             "id": user.sub,
             "name": user.name,
