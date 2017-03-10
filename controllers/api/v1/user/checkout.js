@@ -107,17 +107,17 @@ exports.buyNowCompleted = function(req, res, next) {
         coupon = {},
         order = {},
         order_id, error = [];
-    order.total_price = 0;
-    order.total_shipping = 0;
-    order.total_tax = 0;
-    order.coupon = {};
-    order.user_id = req.user._id;
-    order.payment = {
-        method: req.body.payment_method,
-        status: req.body.payment_status,
-        transaction_id: req.body.payment_id
-    };
-    order.products = [];
+        order.total_price = 0;
+        order.total_shipping = 0;
+        order.total_tax = 0;
+        order.coupon = {};
+        order.user_id = req.user._id;
+        order.payment = {
+            method: req.body.payment_method,
+            status: req.body.payment_status,
+            transaction_id: req.body.payment_id
+        };
+        order.products = [];
     async.series([
             function(cb) { //get cart products
                 _h_cart.getSingleCartDetail(req, {
@@ -137,9 +137,9 @@ exports.buyNowCompleted = function(req, res, next) {
                     order.products[item]["id"] = product.product_id._id;
                     order.products[item]["shop_id"] = product.product_id.created_by;
                     order.products[item]["variant"] = product.selected_pricing.name ?
-                        product.selected_pricing.name : null;
+                    product.selected_pricing.name : null;
                     order.products[item]["license"] = product.selected_pricing.license ?
-                        product.selected_pricing.license : null;
+                    product.selected_pricing.license : null;
                     order.products[item]["quantity"] = product.product_quantity;
                     order.products[item]["price"] = product.selected_pricing.after_discount;
                     order.products[item]["pricing"] = product.selected_pricing;
