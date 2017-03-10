@@ -14,9 +14,13 @@ var _h_payumoney = require(ROOT_FOLDER + "/helpers/payumoney");
 var bcrypt = require('bcrypt');
 var async = require("async");
 var isOrderExists = function(id, cb) {
+    console.log('checking order existed');
     Order.find({
         "payment.transaction_id": id
     }, function(err, result) {
+        console.log(err);
+        console.log(result);
+        console.log(result.length);
         if (err) return cb(err);
         else if (result.length) return cb(new Error("Payment id already exists"));
         return cb(null, null);
@@ -218,7 +222,11 @@ exports.buyNowCompleted = function(req, res, next) {
                     return cb(null, null);
             },
             function(cb) { //check payment id already exists
-                isOrderExists(req.body.payment_id, cb);
+                if (req.body.payment_id) {
+                    isOrderExists(req.body.payment_id, cb);
+                } else {
+                    return cb(null, null);
+                }
             },
             function(cb) { // get shipping address
                 Address.findOne({
@@ -310,7 +318,8 @@ exports.buyFromCartCompleted = function(req, res, next) {
     async.series([
             function(cb) { //get cart products
                 _h_cart.getCartDetail({
-                    user_id: req.user._id
+                    $or: [{user_id: req.user._id}, {guest_token: req.body.guest_token}]
+                    // user_id: req.user._id
                 }, function(err, result) {
                     if (!result.cart.length) return next(new Error("No product in cart to checkout."))
                     cart_products = result.cart;
@@ -347,7 +356,10 @@ exports.buyFromCartCompleted = function(req, res, next) {
                         order.total_price += (product.product_quantity * product.selected_pricing.after_discount);
                         order.total_shipping += 0;
                     }
-                    order.total_tax += product.selected_pricing.service_tax;
+
+                    if (product.selected_pricing && product.selected_pricing.service_tax) {
+                        order.total_tax += product.selected_pricing.service_tax;
+                    }
                 });
                 cb(null, null)
             },
@@ -410,7 +422,11 @@ exports.buyFromCartCompleted = function(req, res, next) {
                     return cb(null, null);
             },
             function(cb) { //check payment id already exists
-                isOrderExists(req.body.payment_id, cb);
+                if (req.body.payment_id) {
+                    isOrderExists(req.body.payment_id, cb);
+                } else {
+                    return cb(null, null);
+                }
             },
             function(cb) { // get shipping address
                 Address.findOne({
@@ -435,14 +451,18 @@ exports.buyFromCartCompleted = function(req, res, next) {
                 })
             },
             function(cb) { //save order
+                console.log(order);
+                console.log('start save order');
                 new Order(order).save(function(err, result) {
+                    console.log(err);
+                    console.log(result);
                     order_id = result._id;
                     cb(err, result);
                 })
             },
             function(cb) { //remove cart
                 Cart.remove({
-                    "user_id": req.user._id
+                    $or: [{user_id: req.user._id}, {guest_token: req.body.guest_token}]
                 }, cb);
             },
             function(cb) { // decrement Quantity

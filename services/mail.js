@@ -761,12 +761,14 @@ exports.sendOrderPlacedNotification = function(order_id, cb) {
             },
             function(p_cal) {
                 var products = [];
+                var sendMobileMessage = false;
                 orders.forEach(function(order, index) {
                     order.products.forEach(function(product, index) {
                         products.push(product.name);
                     });
                 });
-                if (!product.created_by.mobile_verified) {
+
+                if (orders[0].user && orders[0].user.phone) {
                     _self.sendMessage(
                         orders[0].user.phone,
                         "You have bought " + products.join(", "),
