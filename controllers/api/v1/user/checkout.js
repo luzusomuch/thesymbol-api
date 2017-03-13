@@ -200,6 +200,8 @@ exports.buyNowCompleted = function(req, res, next) {
             },
             function(cb) {
                 if (req.body.payment_method == "stripe") {
+                    console.log('payable');
+                    console.log(payable);
                     var stripeObject = {
                         amount: payable,
                         source: req.body.payment_id //using payment id as token
