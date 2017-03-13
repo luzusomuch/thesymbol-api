@@ -4,5 +4,6 @@ var stripe_credentials = credentials[globals.environment]["stripe"];
 var stripe = require("stripe")(stripe_credentials.secret_key);
 exports.payForOrder = function(paymentObject, cb) {
     paymentObject["currency"] = globals.currency;
+    paymentObject["amount"] = paymentObject["amount"] * 100;
     stripe.charges.create(paymentObject, cb);
 }
