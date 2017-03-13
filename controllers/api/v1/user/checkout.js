@@ -137,6 +137,7 @@ exports.buyNowCompleted = function(req, res, next) {
             },
             function(cb) { //create order
                 cart_products.forEach(function(product, item) {
+console.log(product);
                     order.products[item] = {};
                     order.products[item]["id"] = product.product_id._id;
                     order.products[item]["shop_id"] = product.product_id.created_by;
@@ -148,6 +149,8 @@ exports.buyNowCompleted = function(req, res, next) {
                     order.products[item]["price"] = product.selected_pricing.after_discount;
                     order.products[item]["pricing"] = product.selected_pricing;
                     order.products[item]["shipping_details"] = product.product_id.shipping_details;
+console.log('product detail ' + order.products[item]['title']);
+console.log(product.selected_pricing);
                     if (product.product_id.type == "digital") {
                         order.total_price += (product.product_quantity * product.selected_pricing.after_discount)
                         order.products[item]["download_token"] = _h_common.getHash(new Date().getTime() +
@@ -160,7 +163,10 @@ exports.buyNowCompleted = function(req, res, next) {
                         var shipping = product.product_id.shipping_details.fee;
                         order.total_price += (product.product_quantity * product.selected_pricing.after_discount);
                         order.total_shipping += shipping;
-                    }
+                    } else {
+			order.total_price += (product.product_quantity * product.selected_pricing.after_discount);
+                        order.total_shipping += 0;
+		    }
                     order.total_tax += product.selected_pricing.service_tax;
                     console.log(order.total_price);
                 });
@@ -168,6 +174,8 @@ exports.buyNowCompleted = function(req, res, next) {
             },
             function(cb) { //apply coupon
                 if (!req.body.coupon) {
+console.log('not using coupon');
+console.log(order);
                     payable = order.total_price + order.total_shipping;
                     return cb(null, null);
                 }
