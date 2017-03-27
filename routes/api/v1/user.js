@@ -36,6 +36,7 @@ router.use("/account", require("./user/account"));
 router.use("/wishlist", require("./user/wishlist"));
 
 router.get("/", userC.query);
+router.get("/get-all-users", userC.getAllUsers);
 router.get("/:id", userC.fetch);
 router.post("/", function(req, res, next) {
         console.log(req.headers['authorization'])

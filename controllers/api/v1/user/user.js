@@ -114,6 +114,20 @@ exports.query = function(req, res, next) {
     //     });
     // });
 }
+
+exports.getAllUsers = function(req, res, next) {
+    var is_deleted = req.query.is_deleted || false;
+
+    User.find({is_deleted: is_deleted}, '-password').exec(function(err, result) {
+        if (err) {
+            return next(err);
+        }
+        return res._response({
+            users: result
+        });
+    });
+}
+
 exports.fetch = function(req, res, next) {
     var where = {};
     where["is_deleted"] = false;
