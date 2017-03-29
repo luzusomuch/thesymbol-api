@@ -9,8 +9,8 @@ var tableSchema = new Schema({
     features: [String],
     type: {
         type: String,
-        enum: ["days", "weeks", "months", "years"],
-        default: "months"
+        enum: ["day", "week", "month", "year"],
+        default: "month"
     },
     numbers: {
         type: Number,
