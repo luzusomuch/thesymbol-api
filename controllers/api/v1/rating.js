@@ -12,15 +12,14 @@ var async = require('async');
 var _s_mail = require(ROOT_FOLDER + "/services/mail");
 var ObjectId = Mongoose.Types.ObjectId;
 exports.addReview = function(req, res, next) {
-    new Rating(req.body)
-        .save(function(err, result) {
-            if (err) {
-            	return next(err);
-            }
-            else {
-            	return res._response(result);
-            }
-        });
+    new Rating(req.body).save(function(err, result) {
+        if (err) {
+        	return next(err);
+        }
+        else {
+        	return res._response(result);
+        }
+    });
 }
 exports.getReview = function(req, res, next) {
     var where = '';
@@ -37,25 +36,17 @@ exports.getReview = function(req, res, next) {
         };
     }
 
-    Rating
-        .find(where)
-        .populate({
-            path: 'user',
-        })
-        .exec(function(err, result) {
-            var options = {
-                path: 'user.image',
-                model: 'Image'
-            };
-
-            if (err) return res.json(500);
-            Rating.populate(result, options, function (err, result) {
-                if (!err) {
-                    return res._response({
-                        reviews: result
-                    }, "success", 200, "Fetched Successfully");
-                }
-                return next(err);
-            });
-        });
+    Rating.find(where).populate({
+        path: 'user',
+        select: '-password',
+        populate: {
+            path: 'image', model: 'Image',
+            path: 'logo', model: 'Image'
+        }
+    }).exec(function(err, result) {
+        if (err) return res.json(500);
+        return res._response({
+            reviews: result
+        }, "success", 200, "Fetched Successfully");
+    });
 }

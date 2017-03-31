@@ -6,15 +6,19 @@ var auth = require(ROOT_FOLDER + "/middlewares/authentication");
 router.get("/", couponC.query);
 router.get("/:id", couponC.fetch);
 router.post("/", passport.authenticate("token", {
-        session: false
-    }),
-    auth.isAdmin, couponC.create);
+    session: false
+}), auth.isAdmin, couponC.create);
+
 router.delete("/:id", passport.authenticate("token", {
-        session: false
-    }),
-    auth.isAdmin, couponC.remove);
-router.put("/:id", couponC.update);
+    session: false
+}), auth.isAdmin, couponC.remove);
+
+router.put("/:id", passport.authenticate("token", {
+    session: false
+}), auth.isAdmin, couponC.update);
+
 router.get("/is-valid/:id", passport.authenticate("token", {
     session: false
 }), couponC.check);
+
 module.exports = router;

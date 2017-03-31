@@ -285,13 +285,13 @@ exports.sendProductStatusNotification = function(user, product, status, cb) {
                 s_call(null, null);
             });
         },
-        function(s_call) {
+        function(data, s_call) {
             _h_common.getProductData(product, function(err, product) {
                 productData = product;
                 s_call(null, null);
             });
         },
-        function(s_call) {
+        function(data, s_call) {
             EmailTemplate.findOne({
                 _id: "57d930853a2ebc4d38c09551"
             }, s_call);

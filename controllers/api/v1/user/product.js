@@ -796,6 +796,7 @@ exports.saveReview = function(req, res, next) {
     });
 }
 exports.saveReturn = function(req, res, next) {
+    console.log(req.user);
     var where = {};
     where.product = req.params.id;
     where.user = req.user._id;
